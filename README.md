@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# A Movie Database Website Made with React And Redux
+
+[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactjs.org/)
+[![Redux](https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)](https://redux.js.org/)
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
