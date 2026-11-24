@@ -25,15 +25,15 @@
         /* Non-black fallback while the photo loads — the hero must never
            read as a black screen. */
         background-color: #262626;
-        .lazy-load-image-background {
+        /* Plain eager <img> (see HeroBanner.jsx): sized directly. */
+        > img {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center 20%;
-            }
+            object-fit: cover;
+            object-position: center 20%;
         }
     }
     .opacity-layer {
@@ -159,9 +159,11 @@
                     svg {
                         font-size: 22px;
                     }
-                    &:hover {
-                        background: #f6121d;
-                        transform: translateY(-1px);
+                    @media (hover: hover) {
+                        &:hover {
+                            background: #f6121d;
+                            transform: translateY(-1px);
+                        }
                     }
                 }
                 /* Preview hero's white primary: kept as the Details action
@@ -180,9 +182,11 @@
                     font-weight: 700;
                     cursor: pointer;
                     transition: background ease 0.25s, transform ease 0.25s;
-                    &:hover {
-                        background: #e8e8e8;
-                        transform: translateY(-1px);
+                    @media (hover: hover) {
+                        &:hover {
+                            background: #e8e8e8;
+                            transform: translateY(-1px);
+                        }
                     }
                 }
             }
@@ -220,7 +224,7 @@
                 border: 1px solid var(--border);
                 border-right: 0;
                 border-radius: var(--radius) 0 0 var(--radius);
-                padding: 0 20px;
+                padding: 0 14px;
                 font-size: 15px;
                 &::placeholder {
                     color: var(--text-dim);
@@ -247,8 +251,10 @@
                 font-weight: 700;
                 cursor: pointer;
                 transition: filter ease 0.25s;
-                &:hover {
-                    filter: brightness(1.15);
+                @media (hover: hover) {
+                    &:hover {
+                        filter: brightness(1.15);
+                    }
                 }
                 @include md {
                     width: 150px;

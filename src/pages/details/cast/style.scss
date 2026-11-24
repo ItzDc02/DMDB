@@ -7,8 +7,9 @@
     }
     .listItems {
         display: flex;
+        align-items: flex-start;
         gap: 20px;
-        overflow-y: hidden;
+        @include horizontal-scroll;
         margin-right: -20px;
         margin-left: -20px;
         padding: 0 20px;
@@ -19,6 +20,8 @@
         .listItem {
             text-align: center;
             color: white;
+            flex-shrink: 0;
+            align-self: flex-start;
             .profileImg {
                 width: 125px;
                 height: 125px;

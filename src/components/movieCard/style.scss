@@ -4,6 +4,7 @@
     margin-bottom: 28px;
     cursor: pointer;
     flex-shrink: 0;
+    align-self: flex-start;
     @include md {
         width: calc(25% - 15px);
     }

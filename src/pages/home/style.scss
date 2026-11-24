@@ -7,6 +7,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+        row-gap: 8px;
         margin-bottom: 24px;
         gap: 16px;
     }
@@ -14,6 +16,12 @@
         @include section-title;
         margin-bottom: 0;
         padding-bottom: 0;
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: 22px;
+        @include md {
+            font-size: 26px;
+        }
         &::after {
             display: none;
         }

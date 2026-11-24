@@ -13,13 +13,10 @@
     }
     .chips {
         display: flex;
+        align-items: flex-start;
         gap: 10px;
-        overflow-x: auto;
+        @include horizontal-scroll;
         padding-bottom: 8px;
-        scrollbar-width: none;
-        &::-webkit-scrollbar {
-            display: none;
-        }
     }
     .chip {
         flex-shrink: 0;

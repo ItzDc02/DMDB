@@ -25,10 +25,19 @@
         @include md {
             display: block;
         }
-        &:hover {
-            opacity: 1;
-            background: var(--red);
-            border-color: var(--red);
+        /* Arrows are a hover-device affordance: on touch devices the
+           row is swiped, so the arrows must never appear there (a
+           circular arrow floating over cards at the right edge is
+           exactly what the phone showed). */
+        @media (hover: none), (pointer: coarse) {
+            display: none !important;
+        }
+        @media (hover: hover) {
+            &:hover {
+                opacity: 1;
+                background: var(--red);
+                border-color: var(--red);
+            }
         }
     }
     .carouselLeftNav {
@@ -82,20 +91,21 @@
     }
     .carouselItems {
         display: flex;
+        align-items: flex-start;
         gap: 10px;
-        overflow-y: hidden;
+        @include horizontal-scroll;
         margin-right: -20px;
         margin-left: -20px;
         padding: 0 20px;
         @include md {
             gap: 20px;
-            overflow: hidden;
             margin: 0;
             padding: 0;
         }
         .carouselItem {
             width: 125px;
             cursor: pointer;
+            align-self: flex-start;
             @include md {
                 width: calc(25% - 15px);
             }

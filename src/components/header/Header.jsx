@@ -12,8 +12,12 @@ import useSearchSuggestions from "../../hooks/useSearchSuggestions";
 
 const Header = () => {
   const [show, setShow] = useState("top");
-  const [lastScrollY, setLastScrollY] = useState(0);
+  // Scroll position lives in a ref, not state: the old state version
+  // re-rendered the header (and re-subscribed the scroll listener) on
+  // every scroll tick, which made scrolling visibly choppy on phones.
+  const lastScrollY = useRef(0);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const mobileMenuRef = useRef(false);
   const [query, setQuery] = useState("");
   const [showSearch, setShowSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -28,7 +32,7 @@ const Header = () => {
 
   const controlNavbar = useCallback(() => {
     if (window.scrollY > 200) {
-      if (window.scrollY > lastScrollY && !mobileMenu) {
+      if (window.scrollY > lastScrollY.current && !mobileMenuRef.current) {
         setShow("hide");
       } else {
         setShow("show");
@@ -36,15 +40,21 @@ const Header = () => {
     } else {
       setShow("top");
     }
-    setLastScrollY(window.scrollY);
-  }, [lastScrollY, mobileMenu]);
+    lastScrollY.current = window.scrollY;
+  }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", controlNavbar);
+    window.addEventListener("scroll", controlNavbar, { passive: true });
     return () => {
       window.removeEventListener("scroll", controlNavbar);
     };
   }, [controlNavbar]);
+
+  // Keep the ref mirror of the mobile menu in sync for the scroll
+  // handler above.
+  useEffect(() => {
+    mobileMenuRef.current = mobileMenu;
+  }, [mobileMenu]);
 
   const openSearch = useCallback(() => {
     setMobileMenu(false);

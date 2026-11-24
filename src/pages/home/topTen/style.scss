@@ -6,12 +6,20 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+        row-gap: 8px;
         gap: 16px;
         margin-bottom: 24px;
         .carouselTitle {
             @include section-title;
             margin-bottom: 0;
             padding-bottom: 0;
+            flex: 1 1 auto;
+            min-width: 0;
+            font-size: 22px;
+            @include md {
+                font-size: 26px;
+            }
             &::after {
                 display: none;
             }
@@ -19,16 +27,12 @@
     }
     .topTenItems {
         display: flex;
+        align-items: flex-start;
         gap: 4px;
-        overflow-x: auto;
-        overflow-y: hidden;
+        @include horizontal-scroll;
         margin-right: -20px;
         margin-left: -20px;
         padding: 0 20px 8px;
-        scrollbar-width: none;
-        &::-webkit-scrollbar {
-            display: none;
-        }
         @include md {
             margin: 0;
             padding: 0 0 8px;
@@ -37,6 +41,7 @@
     .topTenItem {
         display: flex;
         align-items: flex-end;
+        align-self: flex-start;
         flex-shrink: 0;
         cursor: pointer;
         .rank {
@@ -64,18 +69,23 @@
             border-radius: var(--radius);
             overflow: hidden;
             flex-shrink: 0;
+            min-height: 0;
             transition: transform ease 0.3s, box-shadow ease 0.3s;
             @include md {
                 width: 168px;
             }
-            .lazy-load-image-background {
+            /* The <img> is a direct child (Img renders a plain <img>
+               now), so it is sized here. */
+            > img {
+                position: absolute;
+                top: 0;
+                left: 0;
                 width: 100%;
                 height: 100%;
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
+                object-fit: cover;
+                object-position: center;
+                min-width: 0;
+                min-height: 0;
             }
             .watchlistWrap {
                 position: absolute;
@@ -84,9 +94,11 @@
                 z-index: 2;
             }
         }
-        &:hover .posterBlock {
-            transform: translateY(-6px);
-            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.65);
+        @media (hover: hover) {
+            &:hover .posterBlock {
+                transform: translateY(-6px);
+                box-shadow: 0 18px 36px rgba(0, 0, 0, 0.65);
+            }
         }
     }
     .topTenSkeleton {

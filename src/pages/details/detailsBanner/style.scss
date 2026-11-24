@@ -28,15 +28,15 @@
             overflow: hidden;
             /* Non-black fallback while the photo loads. */
             background-color: #262626;
-            .lazy-load-image-background {
+            /* Plain <img> (Img renders one now): sized directly. */
+            > img {
+                position: absolute;
+                top: 0;
+                left: 0;
                 width: 100%;
                 height: 100%;
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    object-position: center 20%;
-                }
+                object-fit: cover;
+                object-position: center 20%;
             }
         }
         .opacity-layer {
@@ -165,16 +165,20 @@
                     stroke-dashoffset: 1300;
                     transition: all 0.5s ease-in-out;
                 }
-                &:hover {
-                    background: #f6121d;
-                    transform: translateY(-1px);
-                    .triangle {
-                        stroke-dashoffset: 0;
-                        opacity: 1;
-                        animation: trailorPlay 0.7s ease-in-out;
-                    }
-                    .circle {
-                        stroke-dashoffset: 0;
+                /* No hover lift on touch: a tap used to leave the
+                   button stuck lifted. */
+                @media (hover: hover) {
+                    &:hover {
+                        background: #f6121d;
+                        transform: translateY(-1px);
+                        .triangle {
+                            stroke-dashoffset: 0;
+                            opacity: 1;
+                            animation: trailorPlay 0.7s ease-in-out;
+                        }
+                        .circle {
+                            stroke-dashoffset: 0;
+                        }
                     }
                 }
             }

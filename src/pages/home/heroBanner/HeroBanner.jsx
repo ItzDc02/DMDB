@@ -9,7 +9,6 @@ import useFetch from "../../../hooks/useFetch";
 import useSearchSuggestions from "../../../hooks/useSearchSuggestions";
 import { fetchDataFromApi } from "../../../utils/api";
 
-import Img from "../../../components/lazyLoadImage/Img";
 import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
 import ErrorMessage from "../../../components/errorMessage/ErrorMessage";
 import SearchSuggestions from "../../../components/searchSuggestions/SearchSuggestions";
@@ -34,7 +33,24 @@ const HeroBanner = () => {
     const pick =
       data?.results?.[Math.floor(Math.random() * 20)] || null;
     setFeatured(pick);
-    setBackground(pick ? url.backdrop + pick.backdrop_path : "");
+    // Backdrop size by viewport: the smaller w780 file on phones (a
+    // w1280 backdrop is ~3x the bytes a phone screen needs), w1280 on
+    // desktop. url.backdrop is "<base>w1280", so swap the size token.
+    let next = "";
+    if (pick?.backdrop_path && url.backdrop) {
+      const size =
+        typeof window !== "undefined" && window.innerWidth < 768
+          ? "w780"
+          : "w1280";
+      next = url.backdrop.replace("w1280", size) + pick.backdrop_path;
+    }
+    setBackground(next);
+    // Pre-warm the photo the moment its URL is known, so the download
+    // starts before the <img> below even mounts.
+    if (next) {
+      const pre = new Image();
+      pre.src = next;
+    }
   }, [data, url.backdrop]);
 
   // Load the featured title's trailer key so "Watch Trailer" can play it.
@@ -85,11 +101,21 @@ const HeroBanner = () => {
 
   return (
     <div className="heroBanner">
-      {!loading && (
-        <div className="backdrop-img">
-          <Img src={background} />
-        </div>
-      )}
+      {/* The backdrop container always renders (over the #262626
+          fallback colour), so the hero never reads as a black screen
+          while the data loads. The photo itself is a plain eager
+          <img> — not a lazy loader — with fetchpriority="high"
+          (lowercase: React 18 passes it through as the attribute). */}
+      <div className="backdrop-img">
+        {background && (
+          <img
+            src={background}
+            alt=""
+            fetchpriority="high"
+            decoding="async"
+          />
+        )}
+      </div>
 
       <div className="opacity-layer"></div>
       <ContentWrapper>
@@ -168,7 +194,7 @@ const HeroBanner = () => {
           <div className="searchInput">
             <input
               type="text"
-              placeholder="Search For Movies and TV Shows"
+              placeholder="Search movies & TV shows"
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
