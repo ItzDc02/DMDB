@@ -147,7 +147,15 @@ const Header = () => {
         </ul>
 
         <div className="mobileMenuItems">
-          <HiOutlineSearch onClick={openSearch} />
+          <button
+            type="button"
+            className="mobileSearchPill"
+            onClick={openSearch}
+            aria-label="Search movies and TV shows"
+          >
+            <HiOutlineSearch />
+            <span>Search movies &amp; TV</span>
+          </button>
           {mobileMenu ? (
             <VscChromeClose onClick={() => setMobileMenu(false)} />
           ) : (

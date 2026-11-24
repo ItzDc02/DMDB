@@ -58,14 +58,16 @@
     }
 }
 
-/* Shared poster visuals for MovieCard and carousel items. */
+/* Shared poster visuals for MovieCard and carousel items. The poster itself
+   stays clean — only the bookmark and the hover overview sit on it. The
+   rating now lives in the text block under the poster. */
 @mixin poster-block {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1.5;
     background-size: cover;
     background-position: center;
-    margin-bottom: 28px;
+    margin-bottom: 12px;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -115,24 +117,43 @@
         @include ellipsis(4);
         pointer-events: none;
     }
-    .circleRating {
-        width: 40px;
-        height: 40px;
-        position: relative;
-        top: 30px;
-        flex-shrink: 0;
+}
+
+/* Shared text block under a poster: bold title, then one clean meta line
+   with a gold star rating and the year. */
+@mixin card-text {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    .title {
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 2px;
+        line-height: 22px;
+        letter-spacing: -0.01em;
+        @include ellipsis(1);
         @include md {
-            width: 50px;
-            height: 50px;
+            font-size: 17px;
         }
     }
-    .genres {
-        display: none;
-        position: relative;
-        @include md {
-            display: flex;
-            flex-flow: wrap;
-            justify-content: flex-end;
+    .meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        .rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 800;
+            color: var(--gold);
+            svg {
+                font-size: 12px;
+            }
+        }
+        .year {
+            color: var(--text-dim);
+            font-weight: 600;
         }
     }
 }

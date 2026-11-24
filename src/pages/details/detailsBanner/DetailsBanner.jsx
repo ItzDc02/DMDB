@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import { BsStarFill } from "react-icons/bs";
 
 import "./style.scss";
 
@@ -9,7 +10,6 @@ import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
 import useFetch from "../../../hooks/useFetch";
 import Genres from "../../../components/genres/Genres";
 import ErrorMessage from "../../../components/errorMessage/ErrorMessage";
-import CircleRating from "../../../components/circleRating/CircleRating";
 import Img from "../../../components/lazyLoadImage/Img.jsx";
 import WatchlistButton from "../../../components/watchlistButton/WatchlistButton";
 import PosterFallback from "../../../assets/no-poster.png";
@@ -38,6 +38,8 @@ const DetailsBanner = ({ video, crew }) => {
         return `${hours}h${minutes > 0 ? ` ${minutes}m` : ""}`;
     };
 
+    const releaseDate = data?.release_date || data?.first_air_date;
+
     return (
         <div className="detailsBanner">
             {!loading ? (
@@ -49,53 +51,68 @@ const DetailsBanner = ({ video, crew }) => {
                     <>
                         {!!data && (
                         <React.Fragment>
-                            <div className="backdrop-img">
-                                <Img src={url.backdrop + data.backdrop_path} />
-                            </div>
-                            <div className="opacity-layer"></div>
-                            <ContentWrapper>
-                                <div className="content">
-                                    <div className="left">
-                                        {data.poster_path ? (
-                                            <Img
-                                                className="posterImg"
-                                                src={
-                                                    url.backdrop +
-                                                    data.poster_path
-                                                }
-                                            />
-                                        ) : (
-                                            <Img
-                                                className="posterImg"
-                                                src={PosterFallback}
-                                            />
+                            {/* Backdrop-led hero: the artwork is the banner,
+                                title / rating / actions sit on top of it. */}
+                            <div className="backdropHero">
+                                <div className="backdrop-img">
+                                    <Img
+                                        src={
+                                            url.backdrop + data.backdrop_path
+                                        }
+                                    />
+                                </div>
+                                <div className="opacity-layer"></div>
+                                <ContentWrapper>
+                                    <div className="heroContent">
+                                        <span className="eyebrow">
+                                            {mediaType === "tv"
+                                                ? "TV Show"
+                                                : "Movie"}
+                                        </span>
+                                        <h1 className="title">
+                                            {data.name || data.title}
+                                        </h1>
+                                        {data.tagline && (
+                                            <div className="subtitle">
+                                                {data.tagline}
+                                            </div>
                                         )}
-                                    </div>
-                                    <div className="right">
-                                        <div className="title">
-                                            {`${
-                                                data.name || data.title
-                                            } (${dayjs(
-                                                data?.release_date
-                                            ).format("YYYY")})`}
+                                        <div className="metaRow">
+                                            {data.vote_average > 0 && (
+                                                <span className="rating">
+                                                    <BsStarFill />
+                                                    {data.vote_average.toFixed(
+                                                        1
+                                                    )}
+                                                </span>
+                                            )}
+                                            {releaseDate && (
+                                                <span className="metaItem">
+                                                    {dayjs(releaseDate).format(
+                                                        "YYYY"
+                                                    )}
+                                                </span>
+                                            )}
+                                            {data.runtime > 0 && (
+                                                <span className="metaItem">
+                                                    {toHoursAndMinutes(
+                                                        data.runtime
+                                                    )}
+                                                </span>
+                                            )}
+                                            {data.status && (
+                                                <span className="metaItem">
+                                                    {data.status}
+                                                </span>
+                                            )}
                                         </div>
-                                        <div className="subtitle">
-                                            {data.tagline}
-                                        </div>
-
                                         <Genres data={_genres} />
-
-                                        <div className="row">
-                                            <CircleRating
-                                                rating={data.vote_average.toFixed(
-                                                    1
-                                                )}
-                                            />
+                                        <div className="actions">
                                             <div
                                                 className="playbtn"
                                                 onClick={() => {
                                                     setShow(true);
-                                                    setVideoId(video.key);
+                                                    setVideoId(video?.key);
                                                 }}
                                             >
                                                 <PlayIcon />
@@ -123,131 +140,142 @@ const DetailsBanner = ({ video, crew }) => {
                                                 }}
                                             />
                                         </div>
-
-                                        <div className="overview">
-                                            <div className="heading">
-                                                Overview
-                                            </div>
-                                            <div className="description">
-                                                {data.overview}
-                                            </div>
-                                        </div>
-
-                                        <div className="info">
-                                            {data.status && (
-                                                <div className="infoItem">
-                                                    <span className="text bold">
-                                                        Status:{" "}
-                                                    </span>
-                                                    <span className="text">
-                                                        {data.status}
-                                                    </span>
-                                                </div>
-                                            )}
-                                            {data.release_date && (
-                                                <div className="infoItem">
-                                                    <span className="text bold">
-                                                        Release Date:{" "}
-                                                    </span>
-                                                    <span className="text">
-                                                        {dayjs(
-                                                            data.release_date
-                                                        ).format("MMM D, YYYY")}
-                                                    </span>
-                                                </div>
-                                            )}
-                                            {data.runtime && (
-                                                <div className="infoItem">
-                                                    <span className="text bold">
-                                                        Runtime:{" "}
-                                                    </span>
-                                                    <span className="text">
-                                                        {toHoursAndMinutes(
-                                                            data.runtime
-                                                        )}
-                                                    </span>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {director?.length > 0 && (
-                                            <div className="info">
-                                                <span className="text bold">
-                                                    Director:{" "}
-                                                </span>
-                                                <span className="text">
-                                                    {director?.map((d, i) => (
-                                                        <span key={i}>
-                                                            {d.name}
-                                                            {director.length -
-                                                                1 !==
-                                                                i && ", "}
-                                                        </span>
-                                                    ))}
-                                                </span>
-                                            </div>
-                                        )}
-
-                                        {writer?.length > 0 && (
-                                            <div className="info">
-                                                <span className="text bold">
-                                                    Writer:{" "}
-                                                </span>
-                                                <span className="text">
-                                                    {writer?.map((d, i) => (
-                                                        <span key={i}>
-                                                            {d.name}
-                                                            {writer.length -
-                                                                1 !==
-                                                                i && ", "}
-                                                        </span>
-                                                    ))}
-                                                </span>
-                                            </div>
-                                        )}
-
-                                        {data?.created_by?.length > 0 && (
-                                            <div className="info">
-                                                <span className="text bold">
-                                                    Creator:{" "}
-                                                </span>
-                                                <span className="text">
-                                                    {data?.created_by?.map(
-                                                        (d, i) => (
-                                                            <span key={i}>
-                                                                {d.name}
-                                                                {data
-                                                                    ?.created_by
-                                                                    .length -
-                                                                    1 !==
-                                                                    i && ", "}
-                                                            </span>
-                                                        )
-                                                    )}
-                                                </span>
-                                            </div>
-                                        )}
                                     </div>
-                                </div>
-                                <VideoPopup
-                                    show={show}
-                                    setShow={setShow}
-                                    videoId={videoId}
-                                    setVideoId={setVideoId}
-                                />
-                            </ContentWrapper>
+                                </ContentWrapper>
+                            </div>
+
+                            {/* Poster + overview + facts in the content flow. */}
+                            <div className="detailsBody">
+                                <ContentWrapper>
+                                    <div className="bodyGrid">
+                                        <div className="posterCol">
+                                            {data.poster_path ? (
+                                                <Img
+                                                    className="posterImg"
+                                                    src={
+                                                        url.backdrop +
+                                                        data.poster_path
+                                                    }
+                                                />
+                                            ) : (
+                                                <Img
+                                                    className="posterImg"
+                                                    src={PosterFallback}
+                                                />
+                                            )}
+                                        </div>
+                                        <div className="infoCol">
+                                            <div className="overview">
+                                                <div className="heading">
+                                                    Overview
+                                                </div>
+                                                <div className="description">
+                                                    {data.overview}
+                                                </div>
+                                            </div>
+                                            <div className="facts">
+                                                {releaseDate && (
+                                                    <div className="factRow">
+                                                        <span className="label">
+                                                            Release Date
+                                                        </span>
+                                                        <span className="value">
+                                                            {dayjs(
+                                                                releaseDate
+                                                            ).format(
+                                                                "MMM D, YYYY"
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                                {data.runtime > 0 && (
+                                                    <div className="factRow">
+                                                        <span className="label">
+                                                            Runtime
+                                                        </span>
+                                                        <span className="value">
+                                                            {toHoursAndMinutes(
+                                                                data.runtime
+                                                            )}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                                {data.status && (
+                                                    <div className="factRow">
+                                                        <span className="label">
+                                                            Status
+                                                        </span>
+                                                        <span className="value">
+                                                            {data.status}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                                {director?.length > 0 && (
+                                                    <div className="factRow">
+                                                        <span className="label">
+                                                            Director
+                                                        </span>
+                                                        <span className="value">
+                                                            {director
+                                                                ?.map(
+                                                                    (d) =>
+                                                                        d.name
+                                                                )
+                                                                .join(", ")}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                                {writer?.length > 0 && (
+                                                    <div className="factRow">
+                                                        <span className="label">
+                                                            Writer
+                                                        </span>
+                                                        <span className="value">
+                                                            {writer
+                                                                ?.map(
+                                                                    (d) =>
+                                                                        d.name
+                                                                )
+                                                                .join(", ")}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                                {data?.created_by?.length >
+                                                    0 && (
+                                                    <div className="factRow">
+                                                        <span className="label">
+                                                            Creator
+                                                        </span>
+                                                        <span className="value">
+                                                            {data?.created_by
+                                                                ?.map(
+                                                                    (d) =>
+                                                                        d.name
+                                                                )
+                                                                .join(", ")}
+                                                        </span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ContentWrapper>
+                            </div>
+                            <VideoPopup
+                                show={show}
+                                setShow={setShow}
+                                videoId={videoId}
+                                setVideoId={setVideoId}
+                            />
                         </React.Fragment>
                     )}
                     </>
                 )
             ) : (
                 <div className="detailsBannerSkeleton">
+                    <div className="bannerSkeleton skeleton"></div>
                     <ContentWrapper>
-                        <div className="left skeleton"></div>
-                        <div className="right">
-                            <div className="row skeleton"></div>
-                            <div className="row skeleton"></div>
-                            <div className="row skeleton"></div>
+                        <div className="bodySkeleton">
                             <div className="row skeleton"></div>
                             <div className="row skeleton"></div>
                             <div className="row skeleton"></div>

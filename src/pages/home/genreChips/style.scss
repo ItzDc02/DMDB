@@ -1,0 +1,44 @@
+@import "../../../mixins.scss";
+
+.genreChips {
+    padding: 28px 0 8px;
+    .genreChipsLabel {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 12px;
+    }
+    .chips {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    .chip {
+        flex-shrink: 0;
+        height: 40px;
+        padding: 0 18px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--black2);
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background ease 0.25s, border-color ease 0.25s,
+            color ease 0.25s;
+        &:hover,
+        &:active {
+            background: var(--red);
+            border-color: var(--red);
+            color: #fff;
+        }
+    }
+}

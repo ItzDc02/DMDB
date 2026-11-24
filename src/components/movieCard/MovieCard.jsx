@@ -5,12 +5,11 @@ import { useSelector } from "react-redux";
 
 import "./style.scss";
 import Img from "../lazyLoadImage/Img";
-import CircleRating from "../circleRating/CircleRating";
-import Genres from "../genres/Genres";
 import PosterFallback from "../../assets/no-poster.png";
 import WatchlistButton from "../watchlistButton/WatchlistButton";
+import { BsStarFill } from "react-icons/bs";
 
-const MovieCard = ({ data, fromSearch, mediaType }) => {
+const MovieCard = ({ data, mediaType }) => {
     const { url } = useSelector((state) => state.home);
     const navigate = useNavigate();
     const posterUrl = data.poster_path
@@ -41,17 +40,21 @@ const MovieCard = ({ data, fromSearch, mediaType }) => {
                 {data.overview && (
                     <div className="overviewOverlay">{data.overview}</div>
                 )}
-                {!fromSearch && (
-                    <React.Fragment>
-                        <CircleRating rating={data.vote_average.toFixed(1)} />
-                        <Genres data={data.genre_ids.slice(0, 2)} />
-                    </React.Fragment>
-                )}
             </div>
             <div className="textBlock">
                 <span className="title">{data.title || data.name}</span>
-                <span className="date">
-                    {dayjs(data.release_date).format("MMM D, YYYY")}
+                <span className="meta">
+                    {data.vote_average > 0 && (
+                        <span className="rating">
+                            <BsStarFill />
+                            {data.vote_average.toFixed(1)}
+                        </span>
+                    )}
+                    <span className="year">
+                        {dayjs(
+                            data.release_date || data.first_air_date
+                        ).format("YYYY")}
+                    </span>
                 </span>
             </div>
         </div>

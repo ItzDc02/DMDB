@@ -93,13 +93,46 @@
     .mobileMenuItems {
         display: flex;
         align-items: center;
-        gap: 20px;
+        flex: 1;
+        gap: 12px;
+        margin-left: 16px;
         @include md {
             display: none;
         }
         svg {
             font-size: 19px;
             color: white;
+            flex-shrink: 0;
+        }
+        .mobileSearchPill {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 38px;
+            padding: 0 14px;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--text-dim);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: left;
+            transition: border-color ease 0.25s, background ease 0.25s;
+            svg {
+                font-size: 17px;
+                color: var(--text-dim);
+            }
+            span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            &:active {
+                border-color: var(--red);
+                background: rgba(229, 9, 20, 0.15);
+            }
         }
     }
 

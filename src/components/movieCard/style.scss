@@ -14,24 +14,7 @@
         @include poster-block;
     }
     .textBlock {
-        color: white;
-        display: flex;
-        flex-direction: column;
-        .title {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            line-height: 22px;
-            letter-spacing: -0.01em;
-            @include ellipsis(1);
-            @include md {
-                font-size: 17px;
-            }
-        }
-        .date {
-            font-size: 13px;
-            color: var(--text-dim);
-        }
+        @include card-text;
     }
     @include poster-hover;
 }
