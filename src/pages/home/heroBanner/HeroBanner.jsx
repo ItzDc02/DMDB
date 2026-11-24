@@ -33,9 +33,10 @@ const HeroBanner = () => {
     const pick =
       data?.results?.[Math.floor(Math.random() * 20)] || null;
     setFeatured(pick);
-    // Backdrop size by viewport: the smaller w500 file on phones (a
-    // w1280 backdrop is ~3x the bytes a phone screen needs), w1280 on
-    // desktop. url.backdrop is "<base>w1280", so swap the size token.
+    // Backdrop size by viewport: w780 on phones, w1280 on desktop.
+    // w500 was too soft — the hero is a full-screen-height portrait
+    // box, so a 500px-wide 16:9 image gets upscaled several times
+    // over. url.backdrop is "<base>w1280", so swap the size token.
     // Don't wait for the /configuration call either: if url.backdrop
     // hasn't loaded yet, use TMDB's standard image base (the same base
     // the config returns) so the download starts the moment
@@ -45,7 +46,7 @@ const HeroBanner = () => {
       const base = url.backdrop || "https://image.tmdb.org/t/p/w1280";
       const size =
         typeof window !== "undefined" && window.innerWidth < 768
-          ? "w500"
+          ? "w780"
           : "w1280";
       next = base.replace("w1280", size) + pick.backdrop_path;
     }
