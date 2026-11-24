@@ -2,9 +2,15 @@
 .footer {
     background-color: var(--black2);
     border-top: 1px solid var(--border);
-    padding: 56px 0;
+    /* Generous bottom padding so the fixed back-to-top button can
+       never cover the footer's last row (or the page's last cards)
+       when scrolled to the very bottom. */
+    padding: 56px 0 92px;
     color: white;
     position: relative;
+    @include md {
+        padding-bottom: 72px;
+    }
     .contentWrapper {
         display: flex;
         align-items: center;

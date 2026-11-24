@@ -31,11 +31,21 @@
         cursor: pointer;
         transition: background ease 0.25s, border-color ease 0.25s,
             color ease 0.25s;
-        &:hover,
+        /* Tap feedback only while the finger is down. The red :hover
+           state is gated to real hover devices: on touch, :hover is
+           sticky, so a swipe left every chip under the finger looking
+           selected (red) as it passed — that was the "select on hover". */
         &:active {
             background: var(--red);
             border-color: var(--red);
             color: #fff;
+        }
+        @media (hover: hover) {
+            &:hover {
+                background: var(--red);
+                border-color: var(--red);
+                color: #fff;
+            }
         }
     }
 }

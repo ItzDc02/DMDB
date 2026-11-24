@@ -22,9 +22,17 @@
         left: 0;
         opacity: 1;
         overflow: hidden;
-        /* Non-black fallback while the photo loads — the hero must never
-           read as a black screen. */
-        background-color: #262626;
+        /* Non-black fallback while the photo loads — a designed dark
+           panel (faint red glow over dark grey), not an empty black
+           screen, so the hero reads as intentional before the photo
+           arrives. */
+        background:
+            radial-gradient(
+                120% 90% at 18% 0%,
+                rgba(229, 9, 20, 0.18),
+                rgba(229, 9, 20, 0) 55%
+            ),
+            linear-gradient(180deg, #2e2e2e 0%, #1f1f1f 55%, #262626 100%);
         /* Plain eager <img> (see HeroBanner.jsx): sized directly. */
         > img {
             position: absolute;
@@ -53,6 +61,11 @@
         bottom: 0;
         left: 0;
     }
+    /* min-width: 0 so the long hero title's min-content can never force
+       this flex item (and the page) wider than the viewport. */
+    > .contentWrapper {
+        min-width: 0;
+    }
     .heroBannerContent {
         display: flex;
         flex-direction: column;
@@ -60,11 +73,15 @@
         color: white;
         text-align: left;
         position: relative;
+        width: 100%;
+        min-width: 0;
         max-width: 800px;
         .featured {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            width: 100%;
+            min-width: 0;
             margin-bottom: 32px;
             .eyebrow {
                 display: inline-flex;
@@ -85,16 +102,21 @@
                 }
             }
             .title {
-                font-size: 52px;
+                /* clamp() so the title scales with the phone instead of
+                   overflowing it: at 360px wide this is ~40px, where even
+                   a 10-letter word (EVERYTHING) fits the 320px column;
+                   overflow-wrap is the backstop so no word can ever run
+                   off the right edge. */
+                font-size: clamp(34px, 11vw, 76px);
                 font-weight: 900;
                 letter-spacing: -0.03em;
                 line-height: 1.02;
                 text-transform: uppercase;
                 margin-bottom: 16px;
+                max-width: 100%;
+                min-width: 0;
+                overflow-wrap: break-word;
                 text-shadow: 0 4px 28px rgba(0, 0, 0, 0.6);
-                @include md {
-                    font-size: 76px;
-                }
             }
             .metaRow {
                 display: flex;
@@ -192,14 +214,13 @@
             }
         }
         .title {
-            font-size: 50px;
+            font-size: clamp(34px, 11vw, 90px);
             font-weight: 900;
             letter-spacing: -0.03em;
             margin-bottom: 10px;
+            max-width: 100%;
+            overflow-wrap: break-word;
             text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
-            @include md {
-                font-size: 90px;
-            }
         }
         .subTitle {
             font-size: 18px;

@@ -33,16 +33,21 @@ const HeroBanner = () => {
     const pick =
       data?.results?.[Math.floor(Math.random() * 20)] || null;
     setFeatured(pick);
-    // Backdrop size by viewport: the smaller w780 file on phones (a
+    // Backdrop size by viewport: the smaller w500 file on phones (a
     // w1280 backdrop is ~3x the bytes a phone screen needs), w1280 on
     // desktop. url.backdrop is "<base>w1280", so swap the size token.
+    // Don't wait for the /configuration call either: if url.backdrop
+    // hasn't loaded yet, use TMDB's standard image base (the same base
+    // the config returns) so the download starts the moment
+    // /movie/upcoming responds instead of after a second API round-trip.
     let next = "";
-    if (pick?.backdrop_path && url.backdrop) {
+    if (pick?.backdrop_path) {
+      const base = url.backdrop || "https://image.tmdb.org/t/p/w1280";
       const size =
         typeof window !== "undefined" && window.innerWidth < 768
-          ? "w780"
+          ? "w500"
           : "w1280";
-      next = url.backdrop.replace("w1280", size) + pick.backdrop_path;
+      next = base.replace("w1280", size) + pick.backdrop_path;
     }
     setBackground(next);
     // Pre-warm the photo the moment its URL is known, so the download

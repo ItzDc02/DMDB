@@ -56,6 +56,10 @@
         }
         .heroContent {
             position: relative;
+            /* min-width: 0 so a long title's min-content can't force this
+               flex item wider than the viewport (same fix as the hero). */
+            width: 100%;
+            min-width: 0;
             color: white;
             .eyebrow {
                 display: inline-flex;
@@ -76,16 +80,19 @@
                 }
             }
             .title {
-                font-size: 42px;
+                /* Same clamp treatment as the hero title: a fixed 42px
+                   size let long single words run off the right edge at
+                   phone width. At 360px this is ~36px, inside the 320px
+                   column, with overflow-wrap as the backstop. */
+                font-size: clamp(30px, 10vw, 64px);
                 font-weight: 900;
                 line-height: 1.05;
                 letter-spacing: -0.03em;
                 text-transform: uppercase;
                 margin-bottom: 10px;
+                max-width: 100%;
+                overflow-wrap: break-word;
                 text-shadow: 0 4px 28px rgba(0, 0, 0, 0.6);
-                @include md {
-                    font-size: 64px;
-                }
             }
             .subtitle {
                 font-size: 16px;
