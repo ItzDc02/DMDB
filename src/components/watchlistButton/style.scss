@@ -1,0 +1,47 @@
+@import "../../mixins.scss";
+
+.watchlistBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    color: white;
+    background: rgba(4, 18, 38, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    transition: all ease 0.25s;
+    svg {
+        flex-shrink: 0;
+    }
+    &:hover {
+        background: var(--pink);
+        border-color: var(--pink);
+    }
+    &.saved {
+        background: var(--gradient);
+        border-color: transparent;
+    }
+    &.withLabel {
+        width: auto;
+        height: 44px;
+        padding: 0 16px;
+        border-radius: 22px;
+        font-size: 14px;
+        font-weight: 500;
+        background: rgba(255, 255, 255, 0.08);
+        &:hover {
+            background: var(--pink);
+        }
+        &.saved {
+            background: var(--gradient);
+        }
+    }
+}

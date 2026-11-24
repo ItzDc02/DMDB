@@ -1,0 +1,36 @@
+@import "../../mixins.scss";
+
+.watchlistPage {
+    min-height: 700px;
+    padding-top: 100px;
+    .pageTitle {
+        font-size: 24px;
+        line-height: 34px;
+        color: white;
+        margin-bottom: 25px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+    }
+    .emptyState {
+        display: block;
+        font-size: 18px;
+        line-height: 28px;
+        color: white;
+        opacity: 0.65;
+        padding: 40px 0;
+    }
+    .content {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 10px;
+        margin-bottom: 50px;
+        @include md {
+            gap: 20px;
+        }
+        .movieCard {
+            .posterBlock {
+                margin-bottom: 20px;
+            }
+        }
+    }
+}

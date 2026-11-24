@@ -11,6 +11,7 @@ import Genres from "../../../components/genres/Genres";
 import ErrorMessage from "../../../components/errorMessage/ErrorMessage";
 import CircleRating from "../../../components/circleRating/CircleRating";
 import Img from "../../../components/lazyLoadImage/Img.jsx";
+import WatchlistButton from "../../../components/watchlistButton/WatchlistButton";
 import PosterFallback from "../../../assets/no-poster.png";
 import { PlayIcon } from "../Playbtn";
 import VideoPopup from "../../../components/videoPopup/VideoPopup";
@@ -102,6 +103,25 @@ const DetailsBanner = ({ video, crew }) => {
                                                     Watch Trailer
                                                 </span>
                                             </div>
+                                            <WatchlistButton
+                                                withLabel
+                                                item={{
+                                                    id: data.id,
+                                                    media_type: mediaType,
+                                                    title:
+                                                        data.title ||
+                                                        data.name,
+                                                    poster_path:
+                                                        data.poster_path,
+                                                    release_date:
+                                                        data.release_date ||
+                                                        data.first_air_date,
+                                                    vote_average:
+                                                        data.vote_average,
+                                                    genre_ids: _genres,
+                                                    overview: data.overview,
+                                                }}
+                                            />
                                         </div>
 
                                         <div className="overview">

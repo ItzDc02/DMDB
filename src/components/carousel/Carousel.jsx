@@ -13,6 +13,7 @@ import PosterFallback from "../../assets/no-poster.png";
 import CircleRating from "../circleRating/CircleRating";
 import Genres from "../genres/Genres";
 import ErrorMessage from "../errorMessage/ErrorMessage";
+import WatchlistButton from "../watchlistButton/WatchlistButton";
 
 import "./style.scss";
 
@@ -71,6 +72,19 @@ const Carousel = ({ data, loading, endpoint, title, error }) => {
                             const posterUrl = item.poster_path
                                 ? url.poster + item.poster_path
                                 : PosterFallback;
+                            const watchlistItem = {
+                                id: item.id,
+                                media_type:
+                                    item.media_type || endpoint,
+                                title: item.title || item.name,
+                                poster_path: item.poster_path,
+                                release_date:
+                                    item.release_date ||
+                                    item.first_air_date,
+                                vote_average: item.vote_average,
+                                genre_ids: item.genre_ids,
+                                overview: item.overview,
+                            };
                             return (
                                 <div
                                     key={item.id}
@@ -85,6 +99,16 @@ const Carousel = ({ data, loading, endpoint, title, error }) => {
                                 >
                                     <div className="posterBlock">
                                         <Img src={posterUrl} />
+                                        <div className="watchlistWrap">
+                                            <WatchlistButton
+                                                item={watchlistItem}
+                                            />
+                                        </div>
+                                        {item.overview && (
+                                            <div className="overviewOverlay">
+                                                {item.overview}
+                                            </div>
+                                        )}
                                         <CircleRating
                                             rating={item.vote_average.toFixed(
                                                 1

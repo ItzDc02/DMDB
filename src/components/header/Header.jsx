@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { HiOutlineSearch } from "react-icons/hi";
 import { SlMenu } from "react-icons/sl";
 import { VscChromeClose } from "react-icons/vsc";
@@ -7,6 +7,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./style.scss";
 
 import ContentWrapper from "../contentWrapper/ContentWrapper";
+import SearchSuggestions from "../searchSuggestions/SearchSuggestions";
+import useSearchSuggestions from "../../hooks/useSearchSuggestions";
 import logo from "../../assets/logo.svg";
 
 const Header = () => {
@@ -15,8 +17,11 @@ const Header = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [query, setQuery] = useState("");
   const [showSearch, setShowSearch] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const searchInputRef = useRef(null);
+  const { results: suggestions } = useSearchSuggestions(query);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -42,18 +47,51 @@ const Header = () => {
     };
   }, [controlNavbar]);
 
+  const openSearch = useCallback(() => {
+    setMobileMenu(false);
+    setShowSearch(true);
+    setTimeout(() => searchInputRef.current?.focus(), 0);
+  }, []);
+
+  // Press "/" anywhere (except while typing) to focus the search box.
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key !== "/") return;
+      const target = event.target;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      event.preventDefault();
+      openSearch();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [openSearch]);
+
   const searchQueryHandler = (event) => {
     if (event.key === "Enter" && query.length > 0) {
       navigate(`/search/${query}`);
+      setShowSuggestions(false);
       setTimeout(() => {
         setShowSearch(false);
       }, 1000);
     }
+    if (event.key === "Escape") {
+      setShowSuggestions(false);
+    }
   };
 
-  const openSearch = () => {
-    setMobileMenu(false);
-    setShowSearch(true);
+  const onSuggestionSelect = (item) => {
+    navigate(`/${item.media_type}/${item.id}`);
+    setShowSuggestions(false);
+    setShowSearch(false);
+    setQuery("");
   };
 
   const openMobileMenu = () => {
@@ -64,8 +102,10 @@ const Header = () => {
   const navigationHandler = (type) => {
     if (type === "movie") {
       navigate("/explore/movie");
-    } else {
+    } else if (type === "tv") {
       navigate("/explore/tv");
+    } else {
+      navigate("/watchlist");
     }
     setMobileMenu(false);
   };
@@ -82,6 +122,12 @@ const Header = () => {
           </li>
           <li className="menuItem" onClick={() => navigationHandler("tv")}>
             TV Shows
+          </li>
+          <li
+            className="menuItem"
+            onClick={() => navigationHandler("watchlist")}
+          >
+            Watchlist
           </li>
           <li className="menuItem">
             <HiOutlineSearch onClick={openSearch} />
@@ -102,12 +148,25 @@ const Header = () => {
           <ContentWrapper>
             <div className="searchInput">
               <input
+                ref={searchInputRef}
                 type="text"
                 placeholder="What Are we Watching Today??"
-                onChange={(e) => setQuery(e.target.value)}
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setShowSuggestions(true);
+                }}
                 onKeyUp={searchQueryHandler}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
               />
               <VscChromeClose onClick={() => setShowSearch(false)} />
+              {showSuggestions && suggestions.length > 0 && (
+                <SearchSuggestions
+                  results={suggestions}
+                  onSelect={onSuggestionSelect}
+                />
+              )}
             </div>
           </ContentWrapper>
         </div>

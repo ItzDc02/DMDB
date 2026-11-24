@@ -30,12 +30,42 @@
             height: 100%;
             border-radius: 12px;
             overflow: hidden;
+            transition: box-shadow ease 0.4s, transform ease 0.4s;
             img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
                 object-position: center;
+                transition: transform ease 0.5s;
             }
+        }
+        .watchlistWrap {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+        }
+        .overviewOverlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            padding: 48px 12px 12px;
+            border-radius: 0 0 12px 12px;
+            background: linear-gradient(
+                180deg,
+                rgba(2, 12, 27, 0) 0%,
+                rgba(2, 12, 27, 0.92) 55%
+            );
+            color: white;
+            font-size: 13px;
+            line-height: 18px;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity ease 0.3s, transform ease 0.3s;
+            @include ellipsis(4);
+            pointer-events: none;
         }
         .circleRating {
             width: 40px;
@@ -79,7 +109,19 @@
     }
     &:hover {
         .posterBlock {
-            opacity: 0.5;
+            .lazy-load-image-background {
+                box-shadow: 0 16px 32px rgba(0, 0, 0, 0.55);
+                transform: translateY(-4px);
+                img {
+                    transform: scale(1.05);
+                }
+            }
+            @media (hover: hover) {
+                .overviewOverlay {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
         }
     }
 }
