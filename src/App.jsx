@@ -20,17 +20,21 @@ function App() {
 
   useEffect(() => {
     const fetchApiConfig = () => {
-      fetchDataFromApi("/configuration").then((res) => {
-        console.log(res);
+      fetchDataFromApi("/configuration")
+        .then((res) => {
+          console.log(res);
 
-        const url = {
-          backdrop: res.images.secure_base_url + "original",
-          poster: res.images.secure_base_url + "original",
-          profile: res.images.secure_base_url + "original",
-        };
+          const url = {
+            backdrop: res.images.secure_base_url + "original",
+            poster: res.images.secure_base_url + "original",
+            profile: res.images.secure_base_url + "original",
+          };
 
-        dispatch(getApiConfiguration(url));
-      });
+          dispatch(getApiConfiguration(url));
+        })
+        .catch(() => {
+          // Image URLs stay empty; pages still render with fallbacks.
+        });
     };
 
     const genresCall = async () => {
@@ -42,13 +46,17 @@ function App() {
         promises.push(fetchDataFromApi(`/genre/${url}/list`));
       });
 
-      const data = await Promise.all(promises);
-      console.log(data);
-      data.map(({ genres }) => {
-        return genres.map((item) => (allGenres[item.id] = item));
-      });
+      try {
+        const data = await Promise.all(promises);
+        console.log(data);
+        data.map(({ genres }) => {
+          return genres.map((item) => (allGenres[item.id] = item));
+        });
 
-      dispatch(getGenres(allGenres));
+        dispatch(getGenres(allGenres));
+      } catch {
+        // Genres stay empty; genre labels are skipped.
+      }
     };
 
     fetchApiConfig();

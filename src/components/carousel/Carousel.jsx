@@ -12,10 +12,11 @@ import Img from "../lazyLoadImage/Img";
 import PosterFallback from "../../assets/no-poster.png";
 import CircleRating from "../circleRating/CircleRating";
 import Genres from "../genres/Genres";
+import ErrorMessage from "../errorMessage/ErrorMessage";
 
 import "./style.scss";
 
-const Carousel = ({ data, loading, endpoint, title }) => {
+const Carousel = ({ data, loading, endpoint, title, error }) => {
     const carouselContainer = useRef();
     const { url } = useSelector((state) => state.home);
     const navigate = useNavigate();
@@ -59,7 +60,13 @@ const Carousel = ({ data, loading, endpoint, title }) => {
                     onClick={() => navigation("right")}
                 />
                 {!loading ? (
-                    <div className="carouselItems" ref={carouselContainer}>
+                    error ? (
+                        <ErrorMessage />
+                    ) : (
+                        <div
+                            className="carouselItems"
+                            ref={carouselContainer}
+                        >
                         {data?.map((item) => {
                             const posterUrl = item.poster_path
                                 ? url.poster + item.poster_path
@@ -100,7 +107,8 @@ const Carousel = ({ data, loading, endpoint, title }) => {
                                 </div>
                             );
                         })}
-                    </div>
+                        </div>
+                    )
                 ) : (
                     <div className="loadingSkeleton">
                         {skItem()}

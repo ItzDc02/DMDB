@@ -8,16 +8,18 @@ import { fetchDataFromApi } from "../../utils/api";
 import ContentWrapper from "../../components/contentWrapper/ContentWrapper";
 import MovieCard from "../../components/movieCard/MovieCard";
 import Spinner from "../../components/spinner/Spinner";
+import ErrorMessage from "../../components/errorMessage/ErrorMessage";
 
 const SearchResult = () => {
     const [data, setData] = useState(null);
     const [pageNum, setPageNum] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
     const { query } = useParams();
 
     const fetchNextPageData = () => {
-        fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`).then(
-            (res) => {
+        fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`)
+            .then((res) => {
                 if (data?.results) {
                     setData({
                         ...data,
@@ -27,26 +29,31 @@ const SearchResult = () => {
                     setData(res);
                 }
                 setPageNum((prev) => prev + 1);
-            }
-        );
+            })
+            .catch(() => {});
     };
 
     useEffect(() => {
         setPageNum(1);
         setLoading(true);
-        fetchDataFromApi(`/search/multi?query=${query}&page=1`).then(
-            (res) => {
+        setError(false);
+        fetchDataFromApi(`/search/multi?query=${query}&page=1`)
+            .then((res) => {
                 setData(res);
                 setPageNum((prev) => prev + 1);
                 setLoading(false);
-            }
-        );
+            })
+            .catch(() => {
+                setError(true);
+                setLoading(false);
+            });
     }, [query]);
 
     return (
         <div className="searchResultsPage">
             {loading && <Spinner initial={true} />}
-            {!loading && (
+            {!loading && error && <ErrorMessage />}
+            {!loading && !error && (
                 <ContentWrapper>
                     {data?.results?.length > 0 ? (
                         <>

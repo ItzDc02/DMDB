@@ -9,7 +9,7 @@ import useFetch from "../../../hooks/useFetch";
 const TopRated = () => {
     const [endpoint, setEndpoint] = useState("movie");
 
-    const { data, loading } = useFetch(`/${endpoint}/top_rated`);
+    const { data, loading, error } = useFetch(`/${endpoint}/top_rated`);
 
     const onTabChange = (tab) => {
         setEndpoint(tab === "Movies" ? "movie" : "tv");
@@ -27,6 +27,7 @@ const TopRated = () => {
             <Carousel
                 data={data?.results}
                 loading={loading}
+                error={error}
                 endpoint={endpoint}
             />
         </div>
