@@ -1,15 +1,13 @@
 @import "../../../mixins.scss";
 .videosSection {
     position: relative;
-    margin-bottom: 50px;
+    margin-bottom: 56px;
     .sectionHeading {
-        font-size: 24px;
-        color: white;
-        margin-bottom: 25px;
+        @include section-title;
     }
     .videos {
         display: flex;
-        gap: 10px;
+        gap: 12px;
         overflow-x: auto;
         margin-right: -20px;
         margin-left: -20px;
@@ -27,13 +25,13 @@
             }
             cursor: pointer;
             .videoThumbnail {
-                margin-bottom: 15px;
+                margin-bottom: 14px;
                 position: relative;
                 img {
                     width: 100%;
                     display: block;
-                    border-radius: 12px;
-                    transition: all 0.7s ease-in-out;
+                    border-radius: var(--radius);
+                    transition: opacity ease 0.3s, transform ease 0.3s;
                 }
                 svg {
                     position: absolute;
@@ -58,24 +56,27 @@
                 }
                 &:hover {
                     img {
-                        opacity: 0.5;
+                        opacity: 0.55;
+                        transform: scale(1.02);
                     }
                     .triangle {
                         stroke-dashoffset: 0;
                         opacity: 1;
-                        stroke: var(--pink);
+                        stroke: var(--red);
                         animation: trailorPlay 0.7s ease-in-out;
                     }
                     .circle {
                         stroke-dashoffset: 0;
-                        stroke: var(--pink);
+                        stroke: var(--red);
                     }
                 }
             }
             .videoTitle {
                 color: white;
                 font-size: 14px;
+                font-weight: 600;
                 line-height: 20px;
+                @include ellipsis(2);
                 @include md {
                     font-size: 16px;
                     line-height: 24px;
@@ -105,7 +106,7 @@
             .thumb {
                 width: 100%;
                 aspect-ratio: 16 / 9;
-                border-radius: 12px;
+                border-radius: var(--radius);
                 margin-bottom: 10px;
             }
             .row {

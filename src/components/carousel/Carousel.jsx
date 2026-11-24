@@ -54,10 +54,12 @@ const Carousel = ({ data, loading, endpoint, title, error }) => {
                 {title && <div className="carouselTitle">{title}</div>}
                 <BsFillArrowLeftCircleFill
                     className="carouselLeftNav arrow"
+                    aria-label="Scroll left"
                     onClick={() => navigation("left")}
                 />
                 <BsFillArrowRightCircleFill
                     className="carouselRighttNav arrow"
+                    aria-label="Scroll right"
                     onClick={() => navigation("right")}
                 />
                 {!loading ? (

@@ -35,3 +35,125 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* Shared section heading — bold display title with a short red rule. */
+@mixin section-title {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: #fff;
+    position: relative;
+    padding-bottom: 12px;
+    margin-bottom: 22px;
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 32px;
+        height: 3px;
+        border-radius: 2px;
+        background: var(--red);
+    }
+}
+
+/* Shared poster visuals for MovieCard and carousel items. */
+@mixin poster-block {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1.5;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 10px;
+    .lazy-load-image-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: var(--radius);
+        overflow: hidden;
+        transition: box-shadow ease 0.4s, transform ease 0.4s;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform ease 0.5s;
+        }
+    }
+    .watchlistWrap {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 2;
+    }
+    .overviewOverlay {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        padding: 48px 12px 12px;
+        border-radius: 0 0 var(--radius) var(--radius);
+        background: linear-gradient(
+            180deg,
+            rgba(10, 10, 11, 0) 0%,
+            rgba(10, 10, 11, 0.94) 55%
+        );
+        color: white;
+        font-size: 13px;
+        line-height: 18px;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity ease 0.3s, transform ease 0.3s;
+        @include ellipsis(4);
+        pointer-events: none;
+    }
+    .circleRating {
+        width: 40px;
+        height: 40px;
+        position: relative;
+        top: 30px;
+        flex-shrink: 0;
+        @include md {
+            width: 50px;
+            height: 50px;
+        }
+    }
+    .genres {
+        display: none;
+        position: relative;
+        @include md {
+            display: flex;
+            flex-flow: wrap;
+            justify-content: flex-end;
+        }
+    }
+}
+
+/* Poster hover: lift + zoom the artwork, reveal the overview on hover-capable devices. */
+@mixin poster-hover {
+    &:hover {
+        .posterBlock {
+            .lazy-load-image-background {
+                box-shadow: 0 18px 36px rgba(0, 0, 0, 0.65);
+                transform: translateY(-6px);
+                img {
+                    transform: scale(1.06);
+                }
+            }
+            @media (hover: hover) {
+                .overviewOverlay {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
+}

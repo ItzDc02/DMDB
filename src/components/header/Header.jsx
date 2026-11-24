@@ -9,7 +9,6 @@ import "./style.scss";
 import ContentWrapper from "../contentWrapper/ContentWrapper";
 import SearchSuggestions from "../searchSuggestions/SearchSuggestions";
 import useSearchSuggestions from "../../hooks/useSearchSuggestions";
-import logo from "../../assets/logo.svg";
 
 const Header = () => {
   const [show, setShow] = useState("top");
@@ -110,26 +109,39 @@ const Header = () => {
     setMobileMenu(false);
   };
 
+  const isActive = (type) =>
+    (type === "movie" && location.pathname === "/explore/movie") ||
+    (type === "tv" && location.pathname === "/explore/tv") ||
+    (type === "watchlist" && location.pathname === "/watchlist");
+
   return (
     <header className={`header ${mobileMenu ? "mobileView" : ""} ${show}`}>
       <ContentWrapper>
         <div className="logo" onClick={() => navigate("/")}>
-          <img src={logo} alt="" />
+          <span className="logoText">
+            DMDB<span className="logoDot">.</span>
+          </span>
         </div>
         <ul className="menuItems">
-          <li className="menuItem" onClick={() => navigationHandler("movie")}>
+          <li
+            className={`menuItem ${isActive("movie") ? "active" : ""}`}
+            onClick={() => navigationHandler("movie")}
+          >
             Movies
           </li>
-          <li className="menuItem" onClick={() => navigationHandler("tv")}>
+          <li
+            className={`menuItem ${isActive("tv") ? "active" : ""}`}
+            onClick={() => navigationHandler("tv")}
+          >
             TV Shows
           </li>
           <li
-            className="menuItem"
+            className={`menuItem ${isActive("watchlist") ? "active" : ""}`}
             onClick={() => navigationHandler("watchlist")}
           >
             Watchlist
           </li>
-          <li className="menuItem">
+          <li className="menuItem searchItem">
             <HiOutlineSearch onClick={openSearch} />
           </li>
         </ul>
@@ -150,7 +162,7 @@ const Header = () => {
               <input
                 ref={searchInputRef}
                 type="text"
-                placeholder="What Are we Watching Today??"
+                placeholder="Search for movies and TV shows"
                 value={query}
                 onChange={(e) => {
                   setQuery(e.target.value);

@@ -8,22 +8,20 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(4, 18, 38, 0.8);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid var(--border);
+    background: var(--black3);
     color: white;
     font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
     transition: all ease 0.25s;
     animation: backToTopIn 0.2s ease forwards;
     &:hover {
-        background: var(--pink);
-        border-color: var(--pink);
+        background: var(--red);
+        border-color: var(--red);
         transform: translateY(-2px);
     }
 }

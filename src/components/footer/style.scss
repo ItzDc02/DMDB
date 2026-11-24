@@ -1,7 +1,8 @@
 @import "../../mixins.scss";
 .footer {
-    background-color: var(--black3);
-    padding: 50px 0;
+    background-color: var(--black2);
+    border-top: 1px solid var(--border);
+    padding: 56px 0;
     color: white;
     position: relative;
     .contentWrapper {
@@ -21,24 +22,26 @@
             gap: 30px;
         }
         .menuItem {
-            transition: all ease 0.3s;
+            transition: color ease 0.3s;
             cursor: pointer;
             font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim);
             @include md {
-                font-size: 16px;
+                font-size: 15px;
             }
             &:hover {
-                color: var(--pink);
+                color: #fff;
             }
         }
     }
     .infoText {
         font-size: 12px;
         line-height: 20px;
-        opacity: 0.5;
+        color: var(--text-dim);
         text-align: center;
         max-width: 800px;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
         @include md {
             font-size: 14px;
             margin-bottom: 30px;
@@ -50,18 +53,20 @@
         justify-content: center;
         gap: 10px;
         .icon {
-            width: 50px;
-            height: 50px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
-            background-color: var(--black);
+            background-color: var(--black3);
+            border: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all ease 0.3s;
             &:hover {
-                box-shadow: 0 0 0.625em var(--pink);
-                color: var(--pink);
+                background: var(--red);
+                border-color: var(--red);
+                color: white;
             }
         }
     }
