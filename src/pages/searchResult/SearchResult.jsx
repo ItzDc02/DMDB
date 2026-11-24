@@ -8,24 +8,12 @@ import { fetchDataFromApi } from "../../utils/api";
 import ContentWrapper from "../../components/contentWrapper/ContentWrapper";
 import MovieCard from "../../components/movieCard/MovieCard";
 import Spinner from "../../components/spinner/Spinner";
-import noResults from "../../assets/no-results.png";
 
 const SearchResult = () => {
     const [data, setData] = useState(null);
     const [pageNum, setPageNum] = useState(1);
     const [loading, setLoading] = useState(false);
     const { query } = useParams();
-
-    const fetchInitialData = () => {
-        setLoading(true);
-        fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`).then(
-            (res) => {
-                setData(res);
-                setPageNum((prev) => prev + 1);
-                setLoading(false);
-            }
-        );
-    };
 
     const fetchNextPageData = () => {
         fetchDataFromApi(`/search/multi?query=${query}&page=${pageNum}`).then(
@@ -45,7 +33,14 @@ const SearchResult = () => {
 
     useEffect(() => {
         setPageNum(1);
-        fetchInitialData();
+        setLoading(true);
+        fetchDataFromApi(`/search/multi?query=${query}&page=1`).then(
+            (res) => {
+                setData(res);
+                setPageNum((prev) => prev + 1);
+                setLoading(false);
+            }
+        );
     }, [query]);
 
     return (
@@ -70,7 +65,7 @@ const SearchResult = () => {
                                 loader={<Spinner />}
                             >
                                 {data?.results.map((item, index) => {
-                                    if (item.media_type === "person") return;
+                                    if (item.media_type === "person") return null;
                                     return (
                                         <MovieCard
                                             key={index}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { HiOutlineSearch } from "react-icons/hi";
 import { SlMenu } from "react-icons/sl";
 import { VscChromeClose } from "react-icons/vsc";
@@ -22,7 +22,7 @@ const Header = () => {
     window.scrollTo(0, 0);
   }, [location]);
 
-  const controlNavbar = () => {
+  const controlNavbar = useCallback(() => {
     if (window.scrollY > 200) {
       if (window.scrollY > lastScrollY && !mobileMenu) {
         setShow("hide");
@@ -33,14 +33,14 @@ const Header = () => {
       setShow("top");
     }
     setLastScrollY(window.scrollY);
-  };
+  }, [lastScrollY, mobileMenu]);
 
   useEffect(() => {
     window.addEventListener("scroll", controlNavbar);
     return () => {
       window.removeEventListener("scroll", controlNavbar);
     };
-  }, [lastScrollY]);
+  }, [controlNavbar]);
 
   const searchQueryHandler = (event) => {
     if (event.key === "Enter" && query.length > 0) {
