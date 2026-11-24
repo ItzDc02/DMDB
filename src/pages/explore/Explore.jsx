@@ -10,6 +10,7 @@ import { fetchDataFromApi } from "../../utils/api";
 import ContentWrapper from "../../components/contentWrapper/ContentWrapper";
 import MovieCard from "../../components/movieCard/MovieCard";
 import Spinner from "../../components/spinner/Spinner";
+import ErrorMessage from "../../components/errorMessage/ErrorMessage";
 
 let filters = {};
 
@@ -30,6 +31,7 @@ const Explore = () => {
     const [data, setData] = useState(null);
     const [pageNum, setPageNum] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
     const [genre, setGenre] = useState(null);
     const [sortby, setSortby] = useState(null);
     const { mediaType } = useParams();
@@ -38,28 +40,36 @@ const Explore = () => {
 
     const fetchInitialData = useCallback(() => {
         setLoading(true);
-        fetchDataFromApi(`/discover/${mediaType}`, filters).then((res) => {
-            setData(res);
-            setPageNum((prev) => prev + 1);
-            setLoading(false);
-        });
+        setError(false);
+        fetchDataFromApi(`/discover/${mediaType}`, filters)
+            .then((res) => {
+                setData(res);
+                setPageNum((prev) => prev + 1);
+                setLoading(false);
+            })
+            .catch(() => {
+                setError(true);
+                setLoading(false);
+            });
     }, [mediaType]);
 
     const fetchNextPageData = () => {
         fetchDataFromApi(
             `/discover/${mediaType}?page=${pageNum}`,
             filters
-        ).then((res) => {
-            if (data?.results) {
-                setData({
-                    ...data,
-                    results: [...data?.results, ...res.results],
-                });
-            } else {
-                setData(res);
-            }
-            setPageNum((prev) => prev + 1);
-        });
+        )
+            .then((res) => {
+                if (data?.results) {
+                    setData({
+                        ...data,
+                        results: [...data?.results, ...res.results],
+                    });
+                } else {
+                    setData(res);
+                }
+                setPageNum((prev) => prev + 1);
+            })
+            .catch(() => {});
     };
 
     useEffect(() => {
@@ -132,7 +142,8 @@ const Explore = () => {
                     </div>
                 </div>
                 {loading && <Spinner initial={true} />}
-                {!loading && (
+                {!loading && error && <ErrorMessage />}
+                {!loading && !error && (
                     <>
                         {data?.results?.length > 0 ? (
                             <InfiniteScroll

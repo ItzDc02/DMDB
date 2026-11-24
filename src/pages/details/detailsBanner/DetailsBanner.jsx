@@ -8,6 +8,7 @@ import "./style.scss";
 import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
 import useFetch from "../../../hooks/useFetch";
 import Genres from "../../../components/genres/Genres";
+import ErrorMessage from "../../../components/errorMessage/ErrorMessage";
 import CircleRating from "../../../components/circleRating/CircleRating";
 import Img from "../../../components/lazyLoadImage/Img.jsx";
 import PosterFallback from "../../../assets/no-poster.png";
@@ -19,7 +20,7 @@ const DetailsBanner = ({ video, crew }) => {
     const [videoId, setVideoId] = useState(null);
 
     const { mediaType, id } = useParams();
-    const { data, loading } = useFetch(`/${mediaType}/${id}`);
+    const { data, loading, error } = useFetch(`/${mediaType}/${id}`);
 
     const { url } = useSelector((state) => state.home);
 
@@ -39,8 +40,13 @@ const DetailsBanner = ({ video, crew }) => {
     return (
         <div className="detailsBanner">
             {!loading ? (
-                <>
-                    {!!data && (
+                error ? (
+                    <ContentWrapper>
+                        <ErrorMessage />
+                    </ContentWrapper>
+                ) : (
+                    <>
+                        {!!data && (
                         <React.Fragment>
                             <div className="backdrop-img">
                                 <Img src={url.backdrop + data.backdrop_path} />
@@ -212,7 +218,8 @@ const DetailsBanner = ({ video, crew }) => {
                             </ContentWrapper>
                         </React.Fragment>
                     )}
-                </>
+                    </>
+                )
             ) : (
                 <div className="detailsBannerSkeleton">
                     <ContentWrapper>
