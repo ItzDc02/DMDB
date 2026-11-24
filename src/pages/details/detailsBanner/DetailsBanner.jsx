@@ -78,6 +78,14 @@ const DetailsBanner = ({ video, crew }) => {
                                             </div>
                                         )}
                                         <div className="metaRow">
+                                            {data.vote_average >= 7 && (
+                                                <span className="match">
+                                                    {Math.round(
+                                                        data.vote_average * 10
+                                                    )}
+                                                    % Match
+                                                </span>
+                                            )}
                                             {data.vote_average > 0 && (
                                                 <span className="rating">
                                                     <BsStarFill />
@@ -153,7 +161,7 @@ const DetailsBanner = ({ video, crew }) => {
                                                 <Img
                                                     className="posterImg"
                                                     src={
-                                                        url.backdrop +
+                                                        url.poster +
                                                         data.poster_path
                                                     }
                                                 />

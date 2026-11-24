@@ -26,6 +26,8 @@
             left: 0;
             opacity: 1;
             overflow: hidden;
+            /* Non-black fallback while the photo loads. */
+            background-color: #262626;
             .lazy-load-image-background {
                 width: 100%;
                 height: 100%;
@@ -42,10 +44,10 @@
             height: 100%;
             background: linear-gradient(
                 180deg,
-                rgba(10, 10, 11, 0.45) 0%,
-                rgba(10, 10, 11, 0) 25%,
-                rgba(10, 10, 11, 0) 45%,
-                rgba(10, 10, 11, 0.6) 75%,
+                rgba(20, 20, 20, 0.45) 0%,
+                rgba(20, 20, 20, 0) 25%,
+                rgba(20, 20, 20, 0) 45%,
+                rgba(20, 20, 20, 0.6) 75%,
                 var(--black) 100%
             );
             position: absolute;
@@ -78,6 +80,7 @@
                 font-weight: 900;
                 line-height: 1.05;
                 letter-spacing: -0.03em;
+                text-transform: uppercase;
                 margin-bottom: 10px;
                 text-shadow: 0 4px 28px rgba(0, 0, 0, 0.6);
                 @include md {
@@ -100,6 +103,11 @@
                 flex-wrap: wrap;
                 gap: 8px 16px;
                 margin-bottom: 16px;
+                .match {
+                    font-size: 17px;
+                    font-weight: 800;
+                    color: var(--green);
+                }
                 .rating {
                     display: inline-flex;
                     align-items: center;
@@ -133,7 +141,7 @@
                 gap: 10px;
                 cursor: pointer;
                 background: var(--red);
-                border-radius: 999px;
+                border-radius: var(--radius);
                 padding: 10px 22px 10px 12px;
                 transition: background ease 0.25s, transform ease 0.25s;
                 svg {

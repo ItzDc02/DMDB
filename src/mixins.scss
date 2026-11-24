@@ -36,10 +36,10 @@
     text-overflow: ellipsis;
 }
 
-/* Shared section heading — bold display title with a short red rule. */
+/* Shared section heading — Archivo 700 with a short red rule. */
 @mixin section-title {
     font-size: 26px;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.2;
     color: #fff;
@@ -105,8 +105,8 @@
         border-radius: 0 0 var(--radius) var(--radius);
         background: linear-gradient(
             180deg,
-            rgba(10, 10, 11, 0) 0%,
-            rgba(10, 10, 11, 0.94) 55%
+            rgba(20, 20, 20, 0) 0%,
+            rgba(20, 20, 20, 0.94) 55%
         );
         color: white;
         font-size: 13px;

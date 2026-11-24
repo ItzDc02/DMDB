@@ -22,6 +22,9 @@
         left: 0;
         opacity: 1;
         overflow: hidden;
+        /* Non-black fallback while the photo loads — the hero must never
+           read as a black screen. */
+        background-color: #262626;
         .lazy-load-image-background {
             width: 100%;
             height: 100%;
@@ -40,10 +43,10 @@
            header and a bottom gradient so the text stays legible. */
         background: linear-gradient(
                 180deg,
-                rgba(10, 10, 11, 0.45) 0%,
-                rgba(10, 10, 11, 0) 22%,
-                rgba(10, 10, 11, 0) 45%,
-                rgba(10, 10, 11, 0.55) 72%,
+                rgba(20, 20, 20, 0.45) 0%,
+                rgba(20, 20, 20, 0) 22%,
+                rgba(20, 20, 20, 0) 45%,
+                rgba(20, 20, 20, 0.55) 72%,
                 var(--black) 100%
             );
         position: absolute;
@@ -86,6 +89,7 @@
                 font-weight: 900;
                 letter-spacing: -0.03em;
                 line-height: 1.02;
+                text-transform: uppercase;
                 margin-bottom: 16px;
                 text-shadow: 0 4px 28px rgba(0, 0, 0, 0.6);
                 @include md {
@@ -98,6 +102,11 @@
                 flex-wrap: wrap;
                 gap: 12px;
                 margin-bottom: 16px;
+                .match {
+                    font-size: 16px;
+                    font-weight: 800;
+                    color: var(--green);
+                }
                 .rating {
                     display: inline-flex;
                     align-items: center;
@@ -142,7 +151,7 @@
                     color: white;
                     outline: 0;
                     border: 0;
-                    border-radius: 999px;
+                    border-radius: var(--radius);
                     font-size: 16px;
                     font-weight: 700;
                     cursor: pointer;
@@ -152,6 +161,27 @@
                     }
                     &:hover {
                         background: #f6121d;
+                        transform: translateY(-1px);
+                    }
+                }
+                /* Preview hero's white primary: kept as the Details action
+                   beside the red Watch Trailer. */
+                .detailsBtn {
+                    display: inline-flex;
+                    align-items: center;
+                    height: 48px;
+                    padding: 0 24px;
+                    background: #fff;
+                    color: #141414;
+                    outline: 0;
+                    border: 0;
+                    border-radius: var(--radius);
+                    font-size: 16px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: background ease 0.25s, transform ease 0.25s;
+                    &:hover {
+                        background: #e8e8e8;
                         transform: translateY(-1px);
                     }
                 }
@@ -184,12 +214,12 @@
             input {
                 width: calc(100% - 100px);
                 height: 52px;
-                background-color: rgba(20, 20, 20, 0.85);
+                background-color: var(--black2);
                 color: #fff;
                 outline: 0;
                 border: 1px solid var(--border);
                 border-right: 0;
-                border-radius: 999px 0 0 999px;
+                border-radius: var(--radius) 0 0 var(--radius);
                 padding: 0 20px;
                 font-size: 15px;
                 &::placeholder {
@@ -208,11 +238,11 @@
             button {
                 width: 100px;
                 height: 52px;
-                background: var(--gradient);
+                background: var(--red);
                 color: white;
                 outline: 0;
                 border: 0;
-                border-radius: 0 999px 999px 0;
+                border-radius: 0 var(--radius) var(--radius) 0;
                 font-size: 16px;
                 font-weight: 700;
                 cursor: pointer;

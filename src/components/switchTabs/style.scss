@@ -2,7 +2,7 @@
     height: 38px;
     background-color: var(--black3);
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: var(--radius);
     padding: 3px;
     flex-shrink: 0;
     .tabItems {
@@ -30,8 +30,8 @@
         .movingBg {
             height: 30px;
             width: 100px;
-            border-radius: 999px;
-            background-image: var(--gradient);
+            border-radius: var(--radius);
+            background: var(--red);
             position: absolute;
             left: 0;
             transition: left cubic-bezier(0.88, -0.35, 0.565, 1.35) 0.4s;

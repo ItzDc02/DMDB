@@ -10,16 +10,11 @@
     align-items: center;
     transition: transform ease 0.4s, background-color ease 0.4s;
     &.top {
-        background: linear-gradient(
-            180deg,
-            rgba(10, 10, 11, 0.85) 0%,
-            rgba(10, 10, 11, 0) 100%
-        );
+        /* Transparent overlay appbar sitting over the hero. */
+        background: transparent;
     }
     &.show {
-        background-color: rgba(10, 10, 11, 0.92);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        background-color: var(--black);
         border-bottom: 1px solid var(--border);
     }
     &.hide {
@@ -84,7 +79,7 @@
                     bottom: 14px;
                     height: 2px;
                     border-radius: 2px;
-                    background: var(--gold);
+                    background: var(--red);
                 }
             }
         }
@@ -111,9 +106,9 @@
             gap: 8px;
             height: 38px;
             padding: 0 14px;
-            background: rgba(255, 255, 255, 0.09);
+            background: var(--black2);
             border: 1px solid var(--border);
-            border-radius: 999px;
+            border-radius: var(--radius);
             color: var(--text-dim);
             font-size: 14px;
             font-weight: 500;
@@ -162,7 +157,7 @@
                     display: none;
                 }
                 &.active {
-                    color: var(--gold);
+                    color: var(--red);
                 }
                 &:last-child {
                     display: none;

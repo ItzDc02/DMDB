@@ -54,7 +54,7 @@
                 outline: 0;
                 box-shadow: none;
                 background-color: var(--black3);
-                border-radius: 999px;
+                border-radius: var(--radius);
                 min-height: 46px;
                 .react-select__value-container {
                     .react-select__placeholder,
@@ -68,7 +68,7 @@
                 }
                 .react-select__multi-value {
                     background-color: var(--red);
-                    border-radius: 999px;
+                    border-radius: var(--radius);
                     .react-select__multi-value__label {
                         color: white;
                     }
@@ -95,7 +95,7 @@
                 box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
                 .react-select__option {
                     color: white;
-                    border-radius: 8px;
+                    border-radius: var(--radius);
                     &--is-focused {
                         background-color: rgba(229, 9, 20, 0.16);
                     }

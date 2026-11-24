@@ -1,6 +1,6 @@
 :root {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+  font-family: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
@@ -11,24 +11,21 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  /* Cinematic dark theme — near-black surfaces, red primary, gold highlights */
-  --black: #0a0a0b;
-  --black2: #141414;
-  --black3: #1e1e21;
-  --black-light: #26262b;
-  --black-lighter: #3d3d44;
+  /* Preview Cinematic system: near-black #141414 page, red primary,
+     gold ratings, green match — flat colour + photography, no blur. */
+  --black: #141414;
+  --black2: #1f1f1f;
+  --black3: #2a2a2a;
+  --black-light: #333333;
+  --black-lighter: #404040;
   --red: #e50914;
   --red-dark: #b00610;
   --gold: #f5c518;
-  /* Legacy aliases — kept so older references still resolve to the new palette */
-  --pink: #e50914;
-  --orange: #f5c518;
-  --gradient: linear-gradient(98.37deg, #e50914 0%, #b00610 100%);
-  --gold-gradient: linear-gradient(98.37deg, #f5c518 0%, #e6a817 100%);
+  --green: #46d369;
   --text: #f5f5f5;
   --text-dim: rgba(245, 245, 245, 0.62);
   --border: rgba(255, 255, 255, 0.09);
-  --radius: 14px;
+  --radius: 6px;
 }
 
 * {
@@ -73,7 +70,7 @@ button {
 .skeleton {
   position: relative;
   overflow: hidden;
-  background-color: #1a1a1d;
+  background-color: #232323;
   &::after {
     position: absolute;
     top: 0;

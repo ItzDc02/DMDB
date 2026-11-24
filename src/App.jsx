@@ -26,10 +26,12 @@ function App() {
         .then((res) => {
           console.log(res);
 
+          // Right-sized images: w1280 backdrops, w342 posters, w185
+          // profiles — never full-size originals.
           const url = {
-            backdrop: res.images.secure_base_url + "original",
-            poster: res.images.secure_base_url + "original",
-            profile: res.images.secure_base_url + "original",
+            backdrop: res.images.secure_base_url + "w1280",
+            poster: res.images.secure_base_url + "w342",
+            profile: res.images.secure_base_url + "w185",
           };
 
           dispatch(getApiConfiguration(url));

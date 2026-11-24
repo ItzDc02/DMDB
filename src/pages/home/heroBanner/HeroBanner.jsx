@@ -99,6 +99,11 @@ const HeroBanner = () => {
               <span className="eyebrow">Featured Movie</span>
               <h1 className="title">{featured.title || featured.name}</h1>
               <div className="metaRow">
+                {featured.vote_average >= 7 && (
+                  <span className="match">
+                    {Math.round(featured.vote_average * 10)}% Match
+                  </span>
+                )}
                 {featured.vote_average > 0 && (
                   <span className="rating">
                     <BsStarFill />
@@ -129,6 +134,13 @@ const HeroBanner = () => {
                     Watch Trailer
                   </button>
                 )}
+                <button
+                  type="button"
+                  className="detailsBtn"
+                  onClick={() => navigate(`/movie/${featured.id}`)}
+                >
+                  Details
+                </button>
                 <WatchlistButton
                   withLabel
                   item={{
