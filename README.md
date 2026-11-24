@@ -6,6 +6,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Setup
+
+1. Install dependencies: `npm install`
+2. Copy `.env.example` to `.env` and fill in `REACT_APP_TMDB_TOKEN` with your TMDB API Read Access Token (themoviedb.org → Settings → API). The site shows no movies without it.
+3. Run the app: `npm start`
+
+Deployments (e.g. Vercel) need the same `REACT_APP_TMDB_TOKEN` variable set, plus Node 22.x (see `engines` in `package.json` and `.nvmrc`).
+
 ## Available Scripts
 
 In the project directory, you can run:
