@@ -1,0 +1,67 @@
+@import "../../mixins.scss";
+
+.searchSuggestions {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: #0a1f3d;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+    animation: suggestionsIn 0.15s ease forwards;
+    .suggestionItem {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background ease 0.2s;
+        &:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .lazy-load-image-background,
+        .suggestionPoster {
+            width: 34px;
+            height: 51px;
+            flex-shrink: 0;
+            border-radius: 6px;
+            overflow: hidden;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+        .suggestionText {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+            .suggestionTitle {
+                color: white;
+                font-size: 15px;
+                line-height: 20px;
+                @include ellipsis(1);
+            }
+            .suggestionMeta {
+                color: white;
+                opacity: 0.55;
+                font-size: 13px;
+            }
+        }
+    }
+}
+
+@keyframes suggestionsIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

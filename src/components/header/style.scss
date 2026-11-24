@@ -12,11 +12,14 @@
     z-index: 2;
     &.top {
         background: rgba(0, 0, 0, 0.25);
-        backdrop-filter: blur(3.5px);
-        -webkit-backdrop-filter: blur(3.5px);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
     }
     &.show {
-        background-color: var(--black3);
+        background-color: rgba(2, 12, 27, 0.92);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     &.hide {
         transform: translateY(-60px);
@@ -116,6 +119,7 @@
             height: 40px;
             margin-top: 10px;
             width: 100%;
+            position: relative;
             svg {
                 font-size: 20px;
                 flex-shrink: 0;
