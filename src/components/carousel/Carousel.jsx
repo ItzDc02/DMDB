@@ -10,10 +10,9 @@ import dayjs from "dayjs";
 import ContentWrapper from "../contentWrapper/ContentWrapper";
 import Img from "../lazyLoadImage/Img";
 import PosterFallback from "../../assets/no-poster.png";
-import CircleRating from "../circleRating/CircleRating";
-import Genres from "../genres/Genres";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import WatchlistButton from "../watchlistButton/WatchlistButton";
+import { BsStarFill } from "react-icons/bs";
 
 import "./style.scss";
 
@@ -54,10 +53,12 @@ const Carousel = ({ data, loading, endpoint, title, error }) => {
                 {title && <div className="carouselTitle">{title}</div>}
                 <BsFillArrowLeftCircleFill
                     className="carouselLeftNav arrow"
+                    aria-label="Scroll left"
                     onClick={() => navigation("left")}
                 />
                 <BsFillArrowRightCircleFill
                     className="carouselRighttNav arrow"
+                    aria-label="Scroll right"
                     onClick={() => navigation("right")}
                 />
                 {!loading ? (
@@ -109,23 +110,26 @@ const Carousel = ({ data, loading, endpoint, title, error }) => {
                                                 {item.overview}
                                             </div>
                                         )}
-                                        <CircleRating
-                                            rating={item.vote_average.toFixed(
-                                                1
-                                            )}
-                                        />
-                                        <Genres
-                                            data={item.genre_ids.slice(0, 2)}
-                                        />
                                     </div>
                                     <div className="textBlock">
                                         <span className="title">
                                             {item.title || item.name}
                                         </span>
-                                        <span className="date">
-                                            {dayjs(item.release_date || item.first_air_date).format(
-                                                "MMM D, YYYY"
+                                        <span className="meta">
+                                            {item.vote_average > 0 && (
+                                                <span className="rating">
+                                                    <BsStarFill />
+                                                    {item.vote_average.toFixed(
+                                                        1
+                                                    )}
+                                                </span>
                                             )}
+                                            <span className="year">
+                                                {dayjs(
+                                                    item.release_date ||
+                                                        item.first_air_date
+                                                ).format("YYYY")}
+                                            </span>
                                         </span>
                                     </div>
                                 </div>

@@ -13,6 +13,12 @@ const Watchlist = () => {
         <div className="watchlistPage">
             <ContentWrapper>
                 <div className="pageTitle">My Watchlist</div>
+            {list.length > 0 && (
+                <span className="pageSubtitle">
+                    <span className="count">{list.length}</span>{" "}
+                    {list.length === 1 ? "title" : "titles"} saved
+                </span>
+            )}
                 {list.length > 0 ? (
                     <div className="content">
                         {list.map((item) => (

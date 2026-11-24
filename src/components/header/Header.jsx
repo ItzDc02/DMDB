@@ -9,12 +9,15 @@ import "./style.scss";
 import ContentWrapper from "../contentWrapper/ContentWrapper";
 import SearchSuggestions from "../searchSuggestions/SearchSuggestions";
 import useSearchSuggestions from "../../hooks/useSearchSuggestions";
-import logo from "../../assets/logo.svg";
 
 const Header = () => {
   const [show, setShow] = useState("top");
-  const [lastScrollY, setLastScrollY] = useState(0);
+  // Scroll position lives in a ref, not state: the old state version
+  // re-rendered the header (and re-subscribed the scroll listener) on
+  // every scroll tick, which made scrolling visibly choppy on phones.
+  const lastScrollY = useRef(0);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const mobileMenuRef = useRef(false);
   const [query, setQuery] = useState("");
   const [showSearch, setShowSearch] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -29,7 +32,7 @@ const Header = () => {
 
   const controlNavbar = useCallback(() => {
     if (window.scrollY > 200) {
-      if (window.scrollY > lastScrollY && !mobileMenu) {
+      if (window.scrollY > lastScrollY.current && !mobileMenuRef.current) {
         setShow("hide");
       } else {
         setShow("show");
@@ -37,15 +40,21 @@ const Header = () => {
     } else {
       setShow("top");
     }
-    setLastScrollY(window.scrollY);
-  }, [lastScrollY, mobileMenu]);
+    lastScrollY.current = window.scrollY;
+  }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", controlNavbar);
+    window.addEventListener("scroll", controlNavbar, { passive: true });
     return () => {
       window.removeEventListener("scroll", controlNavbar);
     };
   }, [controlNavbar]);
+
+  // Keep the ref mirror of the mobile menu in sync for the scroll
+  // handler above.
+  useEffect(() => {
+    mobileMenuRef.current = mobileMenu;
+  }, [mobileMenu]);
 
   const openSearch = useCallback(() => {
     setMobileMenu(false);
@@ -110,32 +119,53 @@ const Header = () => {
     setMobileMenu(false);
   };
 
+  const isActive = (type) =>
+    (type === "movie" && location.pathname === "/explore/movie") ||
+    (type === "tv" && location.pathname === "/explore/tv") ||
+    (type === "watchlist" && location.pathname === "/watchlist");
+
   return (
     <header className={`header ${mobileMenu ? "mobileView" : ""} ${show}`}>
       <ContentWrapper>
         <div className="logo" onClick={() => navigate("/")}>
-          <img src={logo} alt="" />
+          <span className="logoText">
+            DMDB<span className="logoDot">.</span>
+          </span>
         </div>
         <ul className="menuItems">
-          <li className="menuItem" onClick={() => navigationHandler("movie")}>
+          <li
+            className={`menuItem ${isActive("movie") ? "active" : ""}`}
+            onClick={() => navigationHandler("movie")}
+          >
             Movies
           </li>
-          <li className="menuItem" onClick={() => navigationHandler("tv")}>
+          <li
+            className={`menuItem ${isActive("tv") ? "active" : ""}`}
+            onClick={() => navigationHandler("tv")}
+          >
             TV Shows
           </li>
           <li
-            className="menuItem"
+            className={`menuItem ${isActive("watchlist") ? "active" : ""}`}
             onClick={() => navigationHandler("watchlist")}
           >
             Watchlist
           </li>
-          <li className="menuItem">
+          <li className="menuItem searchItem">
             <HiOutlineSearch onClick={openSearch} />
           </li>
         </ul>
 
         <div className="mobileMenuItems">
-          <HiOutlineSearch onClick={openSearch} />
+          <button
+            type="button"
+            className="mobileSearchPill"
+            onClick={openSearch}
+            aria-label="Search movies and TV shows"
+          >
+            <HiOutlineSearch />
+            <span>Search movies &amp; TV</span>
+          </button>
           {mobileMenu ? (
             <VscChromeClose onClick={() => setMobileMenu(false)} />
           ) : (
@@ -150,7 +180,7 @@ const Header = () => {
               <input
                 ref={searchInputRef}
                 type="text"
-                placeholder="What Are we Watching Today??"
+                placeholder="Search for movies and TV shows"
                 value={query}
                 onChange={(e) => {
                   setQuery(e.target.value);

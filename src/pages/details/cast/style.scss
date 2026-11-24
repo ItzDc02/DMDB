@@ -1,16 +1,15 @@
 @import "../../../mixins.scss";
 .castSection {
     position: relative;
-    margin-bottom: 50px;
+    margin-bottom: 56px;
     .sectionHeading {
-        font-size: 24px;
-        color: white;
-        margin-bottom: 25px;
+        @include section-title;
     }
     .listItems {
         display: flex;
+        align-items: flex-start;
         gap: 20px;
-        overflow-y: hidden;
+        @include horizontal-scroll;
         margin-right: -20px;
         margin-left: -20px;
         padding: 0 20px;
@@ -21,12 +20,16 @@
         .listItem {
             text-align: center;
             color: white;
+            flex-shrink: 0;
+            align-self: flex-start;
             .profileImg {
                 width: 125px;
                 height: 125px;
                 border-radius: 50%;
                 overflow: hidden;
                 margin-bottom: 15px;
+                border: 2px solid transparent;
+                transition: border-color ease 0.3s;
                 @include md {
                     width: 175px;
                     height: 175px;
@@ -40,10 +43,13 @@
                     display: block;
                 }
             }
+            &:hover .profileImg {
+                border-color: var(--red);
+            }
             .name {
                 font-size: 14px;
                 line-height: 20px;
-                font-weight: 600;
+                font-weight: 700;
                 @include md {
                     font-size: 18px;
                     line-height: 24px;
@@ -52,7 +58,7 @@
             .character {
                 font-size: 14px;
                 line-height: 20px;
-                opacity: 0.5;
+                color: var(--text-dim);
                 @include md {
                     font-size: 16px;
                     line-height: 24px;

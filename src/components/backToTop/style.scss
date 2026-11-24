@@ -2,39 +2,37 @@
 
 .backToTop {
     position: fixed;
-    right: 20px;
-    bottom: 24px;
+    right: 12px;
+    /* Clear the Android gesture bar as well as the screen edge. */
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     z-index: 5;
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(4, 18, 38, 0.8);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid var(--border);
+    background: var(--black3);
     color: white;
-    font-size: 20px;
+    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
-    transition: all ease 0.25s;
-    animation: backToTopIn 0.2s ease forwards;
-    &:hover {
-        background: var(--pink);
-        border-color: var(--pink);
-        transform: translateY(-2px);
+    /* Semi-transparent so it never reads as a solid disc sitting on
+       top of cards or toggles; full opacity on hover/tap. */
+    opacity: 0.7;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+    transition: opacity ease 0.25s, background ease 0.25s,
+        border-color ease 0.25s, transform ease 0.25s;
+    /* No hover lift on touch. */
+    @media (hover: hover) {
+        &:hover {
+            background: var(--red);
+            border-color: var(--red);
+            opacity: 1;
+            transform: translateY(-2px);
+        }
     }
-}
-
-@keyframes backToTopIn {
-    0% {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    100% {
+    &:active {
         opacity: 1;
-        transform: translateY(0);
     }
 }

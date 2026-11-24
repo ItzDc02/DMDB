@@ -35,3 +35,184 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* Shared horizontal scroller: touch-swipeable rows with no visible
+   scrollbar and a right-edge fade hinting that there is more to
+   scroll to. `touch-action: pan-x pan-y` is what lets a horizontal
+   swipe scroll the row instead of being swallowed by the page, and
+   `user-select: none` stops a drag selecting card text instead. */
+@mixin horizontal-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+    scrollbar-width: none;
+    scroll-snap-type: none;
+    user-select: none;
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        #000 calc(100% - 44px),
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        90deg,
+        #000 calc(100% - 44px),
+        transparent 100%
+    );
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* Shared section heading — Archivo 700 with a short red rule. */
+@mixin section-title {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: #fff;
+    position: relative;
+    padding-bottom: 12px;
+    margin-bottom: 22px;
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 32px;
+        height: 3px;
+        border-radius: 2px;
+        background: var(--red);
+    }
+}
+
+/* Shared poster visuals for MovieCard and carousel items. The poster itself
+   stays clean — only the bookmark and the hover overview sit on it. The
+   rating now lives in the text block under the poster. */
+@mixin poster-block {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1.5;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 10px;
+    /* A poster must never stretch: rows are flex containers and their
+       default align-items: stretch made tall items (and the gap below
+       them). */
+    flex-shrink: 0;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+    transition: box-shadow ease 0.4s, transform ease 0.4s;
+    /* The <img> is a direct child (Img renders a plain <img> now), so
+       it is sized here — not via the old .lazy-load-image-background
+       wrapper, which no longer exists. */
+    > img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: var(--radius);
+        min-width: 0;
+        min-height: 0;
+        transition: transform ease 0.5s;
+    }
+    .watchlistWrap {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 2;
+    }
+    .overviewOverlay {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        padding: 48px 12px 12px;
+        border-radius: 0 0 var(--radius) var(--radius);
+        background: linear-gradient(
+            180deg,
+            rgba(20, 20, 20, 0) 0%,
+            rgba(20, 20, 20, 0.94) 55%
+        );
+        color: white;
+        font-size: 13px;
+        line-height: 18px;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity ease 0.3s, transform ease 0.3s;
+        @include ellipsis(4);
+        pointer-events: none;
+    }
+}
+
+/* Shared text block under a poster: bold title, then one clean meta line
+   with a gold star rating and the year. */
+@mixin card-text {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    .title {
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 2px;
+        line-height: 22px;
+        letter-spacing: -0.01em;
+        @include ellipsis(1);
+        @include md {
+            font-size: 17px;
+        }
+    }
+    .meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        .rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 800;
+            color: var(--gold);
+            svg {
+                font-size: 12px;
+            }
+        }
+        .year {
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+    }
+}
+
+/* Poster hover: lift + zoom the artwork, reveal the overview.
+   Gated ENTIRELY behind (hover: hover) — on touch devices a tap used
+   to trigger the lift/zoom/shadow and leave cards stuck lifted while
+   scrolling, which read as choppy judder. Touch gets no hover
+   transforms at all. */
+@mixin poster-hover {
+    @media (hover: hover) {
+        &:hover {
+            .posterBlock {
+                box-shadow: 0 18px 36px rgba(0, 0, 0, 0.65);
+                transform: translateY(-6px);
+                > img {
+                    transform: scale(1.06);
+                }
+                .overviewOverlay {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
+}

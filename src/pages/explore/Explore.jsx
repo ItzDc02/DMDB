@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Select from "react-select";
 
@@ -35,6 +35,9 @@ const Explore = () => {
     const [genre, setGenre] = useState(null);
     const [sortby, setSortby] = useState(null);
     const { mediaType } = useParams();
+    const [searchParams] = useSearchParams();
+    // Deep link from the home genre chips: /explore/movie?genre=28
+    const genreParam = searchParams.get("genre");
 
     const { data: genresData } = useFetch(`/genre/${mediaType}/list`);
 
@@ -74,12 +77,28 @@ const Explore = () => {
 
     useEffect(() => {
         filters = {};
+        if (genreParam) {
+            filters.with_genres = genreParam;
+        }
         setData(null);
         setPageNum(1);
         setSortby(null);
         setGenre(null);
         fetchInitialData();
-    }, [mediaType, fetchInitialData]);
+    }, [mediaType, genreParam, fetchInitialData]);
+
+    // Once the genre list loads, reflect the deep-linked genre in the
+    // filter dropdown so it matches the applied filter.
+    useEffect(() => {
+        if (genreParam && genresData?.genres) {
+            const matched = genresData.genres.filter(
+                (g) => String(g.id) === genreParam
+            );
+            if (matched.length > 0) {
+                setGenre(matched);
+            }
+        }
+    }, [genreParam, genresData]);
 
     const onChange = (selectedItems, action) => {
         if (action.name === "sortby") {

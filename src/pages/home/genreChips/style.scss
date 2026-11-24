@@ -1,0 +1,51 @@
+@import "../../../mixins.scss";
+
+.genreChips {
+    padding: 28px 0 8px;
+    .genreChipsLabel {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 12px;
+    }
+    .chips {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        @include horizontal-scroll;
+        padding-bottom: 8px;
+    }
+    .chip {
+        flex-shrink: 0;
+        height: 40px;
+        padding: 0 18px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background: var(--black2);
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background ease 0.25s, border-color ease 0.25s,
+            color ease 0.25s;
+        /* Tap feedback only while the finger is down. The red :hover
+           state is gated to real hover devices: on touch, :hover is
+           sticky, so a swipe left every chip under the finger looking
+           selected (red) as it passed — that was the "select on hover". */
+        &:active {
+            background: var(--red);
+            border-color: var(--red);
+            color: #fff;
+        }
+        @media (hover: hover) {
+            &:hover {
+                background: var(--red);
+                border-color: var(--red);
+                color: #fff;
+            }
+        }
+    }
+}
