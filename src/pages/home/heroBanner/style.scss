@@ -41,7 +41,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 20%;
+            /* True centre on phones: the hero is a full-screen-height
+               portrait box showing a 16:9 still, so the visible slice
+               is the middle of the still, where the subject usually is.
+               Desktop keeps the top-biased 20% crop, where the box is
+               wide and the crop is minor. */
+            object-position: center;
+            @include md {
+                object-position: center 20%;
+            }
         }
     }
     .opacity-layer {
